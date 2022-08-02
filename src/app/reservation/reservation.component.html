@@ -1,0 +1,10 @@
+<p *ngIf="returnError && !displayAddPurchaseBool ">
+  <ngb-alert [dismissible]="true" (closed)="closeAlert()">
+    <strong>Attention !</strong> {{errorMessage}}.
+  </ngb-alert>
+</p>
+<p *ngIf="returnSuccess">
+  <ngb-alert [type]='success' (closed)="closeAlert()">
+    <strong>Merci !</strong> {{errorMessage}}.
+  </ngb-alert>
+</p>

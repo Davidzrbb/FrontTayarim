@@ -13,13 +13,15 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatInputModule} from "@angular/material/input";
+import { ReservationComponent } from './reservation/reservation.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ConnexionUserComponent,
     PurchaseComponent,
-    NavComponent
+    NavComponent,
+    ReservationComponent
   ],
   imports: [
     BrowserModule,

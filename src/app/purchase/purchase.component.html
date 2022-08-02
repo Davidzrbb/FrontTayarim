@@ -1,12 +1,97 @@
+<p *ngIf="returnError && !displayAddPurchaseBool ">
+  <ngb-alert [dismissible]="true" (closed)="closeAlert()">
+    <strong>Attention !</strong> {{errorMessage}}.
+  </ngb-alert>
+</p>
+<p *ngIf="returnSuccess">
+  <ngb-alert [type]='success' (closed)="closeAlert()">
+    <strong>Merci !</strong> {{errorMessage}}.
+  </ngb-alert>
+</p>
+<div *ngIf="displayImage" class="bg-modal size-wrapper">
+  <div class="popup size-wrapper">
+    <div class="modal-header">
+      <h4 class="modal-title">Image</h4>
+      <button type="button" class="close" (click)="closeImage()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <img [src]="src64" alt="image" class="img-thumbnail">
+    </div>
+  </div>
+</div>
+<div *ngIf="displayReservationBool" class="bg-modal size-wrapper">
+  <div class="popup size-wrapper">
+    <div class="modal-header">
+      <h4 class="modal-title">Reservation</h4>
+      <button type="button" class="close" (click)="closeImage()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="d-flex flex-column">
+        <ul class="list-group">
+          <li class="list-group-item">Nom de la reservation : {{reservations[0].name}}</li>
+          <li class="list-group-item">Date début de reservation : {{reservations[0].dateStarted | date : 'dd/MM/yyyy'}}</li>
+          <li class="list-group-item">Date fin de reservation : {{reservations[0].dateEnded | date : 'dd/MM/yyyy'}}</li>
+          <li class="list-group-item">Prix par nuit : {{reservations[0].amount | number}} ₪</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="displayAddPurchaseBool" class="bg-modal size-wrapper">
+  <p *ngIf="returnError && displayAddPurchaseBool ">
+    <ngb-alert [dismissible]="true" (closed)="closeAlert()">
+      <strong>Attention !</strong> {{errorMessage}}.
+    </ngb-alert>
+  </p>
+  <div class="popup d-flex flex-column ">
+    <h4 class="text-center">Ajouter un achat</h4>
+    <br>
+    <div class="d-flex flex-column">
+      <label for="purchaseName">Nom de l'achat</label>
+      <input #name type="text" class="form-control" name="name" id="purchaseName" style="width: 100%" placeholder="Nom">
+      <br>
+      <label for="purchasePrice">Prix de l'achat</label>
+      <input #price type="number" class="form-control" name="name" id="purchasePrice" style="width: 100%"
+             placeholder="Prix">
+      <br>
+      <label for="purchaseReservation">Lier à une reservation</label>
+      <select #reservationId id="purchaseReservation" style="width: 100%; padding: 2%">
+        <option value="0">Vous devez selectionner une réservation</option>
+        <option *ngFor="let reservation of reservations"
+                [value]="reservation.idReservation">{{reservation.name}}</option>
+      </select>
+      <br>
+      <label for="purchaseDate">Date de l'achat</label>
+      <form class="row row-cols-sm-auto" id="purchaseDate">
+        <div class="col-12">
+          <div class="input-group">
+            <input class="form-control" placeholder="dd-mm-yyyy"
+                   name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" [minDate]="minDateNg"
+                   [maxDate]="maxDateNg">
+            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i
+              class="fa fa-calendar" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </form>
+      <br>
+      <label for="purchaseImage">Image de l'achat</label>
+      <input id="purchaseImage" #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
+    </div>
+    <br>
+    <div class="d-flex flex-row justify-content-center">
+      <input type="submit" value="Envoyer" (click)="addPurchase(name.value,price.value, reservationId.value,d)">
+      <input type="submit" value="Annuler" style="margin-left: 5%" (click)="displayPurchase()">
+    </div>
+  </div>
+</div>
 <div class="m-5">
-<h4>Total Yaron : {{totalNumber}} €</h4>
+  <h4>Total Yaron : <span [ngClass]="{'text-success': totalNumber >= 0, 'text-danger': totalNumber < 0}">{{totalNumber}} ₪</span></h4>
 </div>
 <br>
 <div class="w-100 text-center">
   <mat-form-field appearance="fill">
-    <mat-label>Month and Year</mat-label>
-    <input matInput [matDatepicker]="dp" [formControl]="date">
-    <mat-hint>MM/YYYY</mat-hint>
+    <mat-label>Mois et année</mat-label>
+    <input matInput [matDatepicker]="dp" [formControl]="date" [min]="minDate" [max]="maxDate">
     <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
     <mat-datepicker #dp
                     startView="multi-year"
@@ -14,4 +99,50 @@
                     panelClass="example-month-picker">
     </mat-datepicker>
   </mat-form-field>
+</div>
+<div class="wrapper fadeInDown">
+  <div id="formContent" class="size-wrapper" style="overflow-x: auto">
+    <div class="fadeIn first">
+      <br>
+      <h3>Historique des achats</h3>
+      <br>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="col">Nom</th>
+          <th scope="col">Montant</th>
+          <th scope="col">Date</th>
+          <th scope="col">Image</th>
+          <th scope="col">Reservation</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let purchase of purchaseTmp; index as i">
+          <td>
+            {{purchase.name}}
+          </td>
+          <td>
+            {{purchase.amount}} €
+          </td>
+          <td>
+            {{purchase.datePurchase | date : 'dd/MM/yyyy'}}
+          </td>
+          <td >
+            <span *ngIf=purchase.image class="cursor link-primary" (click)="openImage(purchase.image)"><u>image <i class="fa fa-picture-o" aria-hidden="true"></i></u></span>
+          </td>
+          <td>
+            <span *ngIf=purchase.image class="cursor link-primary" (click)="displayReservation(purchase.idReservation)"><u>Voir la reservation <i class="fa fa-eye" aria-hidden="true"></i></u></span>
+          </td>
+          <td>
+            <i class="fa fa-trash cursor" aria-hidden="true" style="margin-left: 20%; color: #c20b0b" (click)="deletePurchase(purchase.idPurchase)" ></i>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br>
+  <div class="w-100 text-center fadeIn first">
+    <input type="submit" (click)="displayPurchase()" value="Ajouter un achat">
+  </div>
 </div>
