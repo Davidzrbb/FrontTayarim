@@ -1,4 +1,4 @@
-<p *ngIf="returnError && !displayAddPurchaseBool ">
+<p *ngIf="returnError && !displayAddReservationBool">
   <ngb-alert [dismissible]="true" (closed)="closeAlert()">
     <strong>Attention !</strong> {{errorMessage}}.
   </ngb-alert>
@@ -8,3 +8,108 @@
     <strong>Merci !</strong> {{errorMessage}}.
   </ngb-alert>
 </p>
+
+<div *ngIf="displayAddReservationBool" class="bg-modal size-wrapper-modal">
+  <div class="popup size-wrapper-modal" style="overflow: auto">
+    <p *ngIf="returnError && displayAddReservationBool ">
+      <ngb-alert [dismissible]="true" (closed)="closeAlert()">
+        <strong>Attention !</strong> {{errorMessage}}.
+      </ngb-alert>
+    </p>
+    <div class="modal-header">
+      <h4 class="modal-title">Ajouter une reservation</h4>
+      <button type="button" class="close" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <label for="purchaseName">Nom de la reservation</label>
+      <input #name type="text" class="form-control" name="name" id="purchaseName" style="width: 100%" placeholder="Nom">
+      <br> <br>
+      <label for="purchasePrice">Prix de la reservation / nuit</label>
+      <input #price type="number" class="form-control" name="name" id="purchasePrice" style="width: 100%"
+             placeholder="Prix">
+      <br> <br>
+      <label for="purchaseDate">Date début reservation</label>
+      <form class="row row-cols-sm-auto" id="purchaseDate">
+        <div class="col-12">
+          <div class="input-group">
+            <input class="form-control" placeholder="dd-mm-yyyy"
+                   name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" [minDate]="minDateNg"
+                   [maxDate]="maxDateNg">
+            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i
+              class="fa fa-calendar" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </form>
+      <br><br>
+      <label for="purchaseDateFin">Date fin reservation</label>
+      <form class="row row-cols-sm-auto" id="purchaseDateFin">
+        <div class="col-12">
+          <div class="input-group">
+            <input class="form-control" placeholder="dd-mm-yyyy"
+                   name="dp2" [(ngModel)]="newItem" ngbDatepicker #dfin="ngbDatepicker" [minDate]="minDateNg"
+                   [maxDate]="maxDateNg">
+            <button class="btn btn-outline-secondary calendar" (click)="dfin.toggle()" type="button"><i
+              class="fa fa-calendar" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <br>
+    <div class="w-100 text-center">
+      <input type="submit" value="Envoyer" (click)="addReservation(name.value,price.value,d,dfin)">
+    </div>
+  </div>
+</div>
+
+
+<div class="m-5">
+  <h4>Total Yaron : <span [ngClass]="{'text-success': totalNumber >= 0, 'text-danger': totalNumber < 0}">{{totalNumber}}
+    ₪</span></h4>
+</div>
+<div class="wrapper fadeInDown">
+  <div id="formContent" class="size-wrapper" style="overflow-x: auto">
+    <div class="fadeIn first">
+      <br>
+      <h3>Historique des reservations</h3>
+      <br>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="col">Nom</th>
+          <th scope="col">Montant</th>
+          <th scope="col">Date de début</th>
+          <th scope="col">Date de fin</th>
+          <th scope="col">Nombre de nuits</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let reservation of reservations; index as i">
+          <td>
+            {{reservation.name}}
+          </td>
+          <td>
+            {{reservation.amount}} ₪ / nuit
+          </td>
+          <td>
+            {{reservation.dateStarted | date: 'dd/MM/yyyy'}}
+          </td>
+          <td>
+            {{reservation.dateEnded | date: 'dd/MM/yyyy'}}
+          </td>
+          <td>
+            {{reservation.days}}
+          </td>
+          <td>
+            <i class="fa fa-trash cursor" aria-hidden="true" style="margin-left: 20%; color: #c20b0b"
+               (click)="deleteReservation(reservation.idReservation)"></i>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br>
+  <div class="w-100 text-center fadeIn first">
+    <input type="submit" (click)="displayAddReservation()" value="Ajouter une reservation">
+  </div>
+</div>

@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand navbar-light bg-light p-3">
-  <a class="navbar-brand" href="/home">Tayarim</a>
+<nav class="navbar navbar-expand navbar-light bg-light p-3 flex-wrap">
+  <a class="navbar-brand" href="/login"><img src="assets/logo.png" alt="logo" width="150"></a>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
@@ -8,7 +8,9 @@
         <div class="d-flex flex-row">
           <a class="nav-link" href="/purchase" *ngIf="isConnectedBool">Achats<span
             class="sr-only">(current)</span></a>
-          <a class="nav-link" href="/reservation" *ngIf="isConnectedBool">Reservation<span
+          <a class="nav-link" href="/reservation" *ngIf="isConnectedBool">Reservations<span
+            class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/payment" *ngIf="isConnectedBool">Virements<span
             class="sr-only">(current)</span></a>
           <a class="nav-link" href="/login" *ngIf="isConnectedBool" (click)="isDeconnected()">Deconnexion<span
             class="sr-only">(current)</span></a>

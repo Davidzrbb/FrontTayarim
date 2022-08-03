@@ -334,9 +334,16 @@ input[type=password]::placeholder {
 }
 .size-wrapper{
   width : 50%;
+  max-height: 50vh;
 @media (max-width: 768px) {
   width : 350px;
 }
+}
+.size-wrapper-modal{
+  width : 50%;
+  @media (max-width: 768px) {
+    width : 350px;
+  }
 }
 .cursor:hover{
   cursor: pointer;

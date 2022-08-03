@@ -104,7 +104,7 @@ export class PurchaseComponent implements OnInit {
     this.purchaseService.getAll().subscribe({
       next: (res) => {
         for (let i = 0; i < res.length; i++) {
-          if (res[i].image != "") {
+          if (res[i].image != "" && res[i].image != null) {
             let objectURL = 'data:image/png;base64,' + res[i].image;
             res[i].image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
           }
@@ -140,12 +140,7 @@ export class PurchaseComponent implements OnInit {
       this.errorMessage = "Vous devez selectionner une date";
       return;
     }
-    if (reservationId == "0") {
-      this.returnError = true;
-      this.errorMessage = "Vous devez selectionner une reservation";
-      return;
-    }
-    if (name == undefined || price == undefined || reservationId == undefined) {
+    if (name == undefined || price == undefined) {
       this.returnError = true;
       this.errorMessage = "Vous devez remplir tous les champs";
       return;
@@ -159,6 +154,7 @@ export class PurchaseComponent implements OnInit {
     }
     this.purchaseService.createPurchase(createPurchase).subscribe({
       next: (res: any) => {
+        this.selectedFile = null;
         this.returnSuccess = true;
         this.errorMessage = "Achat ajouté avec succès";
         this.getAllPurchase(new Date());
@@ -205,9 +201,10 @@ export class PurchaseComponent implements OnInit {
     this.src64 = image;
   }
 
-  closeImage() {
+  closeModal() {
     this.displayImage = false;
     this.displayReservationBool = false;
+    this.displayAddPurchaseBool = false;
   }
 
   deletePurchase(idPurchase: any) {
@@ -219,6 +216,14 @@ export class PurchaseComponent implements OnInit {
         });
         await this.getAllPurchase(new Date());
         await this.getTotal();
+        this.returnSuccess = true;
+        this.errorMessage = "Achat supprimé avec succès";
+        this.returnError = false;
+      },
+      error: (err) => {
+        this.returnError = true;
+        this.returnSuccess = false;
+        this.errorMessage = err.error.message;
       }
     });
   }
@@ -228,6 +233,5 @@ export class PurchaseComponent implements OnInit {
     this.reservations.filter((reservation: any) => {
       return reservation.idReservation == idReservation;
     }).pop();
-    console.log(this.reservations);
   }
 }

@@ -11,6 +11,7 @@ import {UserSubscribe} from "../models/UserSubscribe";
 export class ReservationService {
 
   private urlGetTotal = `${environment.apiUrl}/reservation/getAll`;
+  private urlDelte = `${environment.apiUrl}/reservation/delete`;
 
 
   constructor(private http: HttpClient) {
@@ -28,4 +29,21 @@ export class ReservationService {
       }));
   }
 
+  delete(idReservation: number) {
+    let token = localStorage.getItem("token");
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${token}`)
+    }
+    return this.http.delete<any>(`${environment.apiUrl}/reservation/delete/${idReservation}`, header);
+  }
+
+  create(createReservation: { amount: string; dateStarted: Date; name: string; dateEnded: Date }) {
+    let token = localStorage.getItem("token");
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${token}`)
+    }
+    return this.http.post<any>(`${environment.apiUrl}/reservation/create`, createReservation, header);
+  }
 }

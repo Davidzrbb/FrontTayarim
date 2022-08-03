@@ -8,28 +8,29 @@
     <strong>Merci !</strong> {{errorMessage}}.
   </ngb-alert>
 </p>
-<div *ngIf="displayImage" class="bg-modal size-wrapper">
-  <div class="popup size-wrapper">
+<div *ngIf="displayImage" class="bg-modal size-wrapper-modal">
+  <div class="popup size-wrapper-modal">
     <div class="modal-header">
       <h4 class="modal-title">Image</h4>
-      <button type="button" class="close" (click)="closeImage()">&times;</button>
+      <button type="button" class="close" (click)="closeModal()">&times;</button>
     </div>
     <div class="modal-body">
-      <img [src]="src64" alt="image" class="img-thumbnail">
+      <img [src]="src64" alt="image" class="img-thumbnail" width="400">
     </div>
   </div>
 </div>
-<div *ngIf="displayReservationBool" class="bg-modal size-wrapper">
-  <div class="popup size-wrapper">
+<div *ngIf="displayReservationBool" class="bg-modal size-wrapper-modal">
+  <div class="popup size-wrapper-modal">
     <div class="modal-header">
       <h4 class="modal-title">Reservation</h4>
-      <button type="button" class="close" (click)="closeImage()">&times;</button>
+      <button type="button" class="close" (click)="closeModal()">&times;</button>
     </div>
     <div class="modal-body">
       <div class="d-flex flex-column">
         <ul class="list-group">
           <li class="list-group-item">Nom de la reservation : {{reservations[0].name}}</li>
-          <li class="list-group-item">Date début de reservation : {{reservations[0].dateStarted | date : 'dd/MM/yyyy'}}</li>
+          <li class="list-group-item">Date début de reservation
+            : {{reservations[0].dateStarted | date : 'dd/MM/yyyy'}}</li>
           <li class="list-group-item">Date fin de reservation : {{reservations[0].dateEnded | date : 'dd/MM/yyyy'}}</li>
           <li class="list-group-item">Prix par nuit : {{reservations[0].amount | number}} ₪</li>
         </ul>
@@ -37,30 +38,25 @@
     </div>
   </div>
 </div>
-<div *ngIf="displayAddPurchaseBool" class="bg-modal size-wrapper">
-  <p *ngIf="returnError && displayAddPurchaseBool ">
-    <ngb-alert [dismissible]="true" (closed)="closeAlert()">
-      <strong>Attention !</strong> {{errorMessage}}.
-    </ngb-alert>
-  </p>
-  <div class="popup d-flex flex-column ">
-    <h4 class="text-center">Ajouter un achat</h4>
-    <br>
-    <div class="d-flex flex-column">
+<div *ngIf="displayAddPurchaseBool" class="bg-modal size-wrapper-modal">
+  <div class="popup size-wrapper-modal" style="overflow: auto">
+    <p *ngIf="returnError && displayAddPurchaseBool ">
+      <ngb-alert [dismissible]="true" (closed)="closeAlert()">
+        <strong>Attention !</strong> {{errorMessage}}.
+      </ngb-alert>
+    </p>
+    <div class="modal-header">
+      <h4 class="modal-title">Ajouter un achat</h4>
+      <button type="button" class="close" (click)="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
       <label for="purchaseName">Nom de l'achat</label>
       <input #name type="text" class="form-control" name="name" id="purchaseName" style="width: 100%" placeholder="Nom">
-      <br>
+      <br> <br>
       <label for="purchasePrice">Prix de l'achat</label>
       <input #price type="number" class="form-control" name="name" id="purchasePrice" style="width: 100%"
              placeholder="Prix">
-      <br>
-      <label for="purchaseReservation">Lier à une reservation</label>
-      <select #reservationId id="purchaseReservation" style="width: 100%; padding: 2%">
-        <option value="0">Vous devez selectionner une réservation</option>
-        <option *ngFor="let reservation of reservations"
-                [value]="reservation.idReservation">{{reservation.name}}</option>
-      </select>
-      <br>
+      <br> <br>
       <label for="purchaseDate">Date de l'achat</label>
       <form class="row row-cols-sm-auto" id="purchaseDate">
         <div class="col-12">
@@ -74,18 +70,28 @@
         </div>
       </form>
       <br>
-      <label for="purchaseImage">Image de l'achat</label>
-      <input id="purchaseImage" #imageInput type="file" accept="image/*" (change)="processFile(imageInput)">
+      <label for="purchaseImage">Image de l'achat * </label>
+      <input id="purchaseImage" #imageInput type="file" accept="image/*" (change)="processFile(imageInput)"
+             style="width: 100%">
+      <br> <br>
+      <label for="purchaseReservation">Lier à une reservation *</label>
+      <select #reservationId id="purchaseReservation" style="width: 100%; padding: 2%">
+        <option value="0">Vous devez selectionner une réservation</option>
+        <option *ngFor="let reservation of reservations"
+                [value]="reservation.idReservation">{{reservation.name}}</option>
+      </select>
     </div>
     <br>
-    <div class="d-flex flex-row justify-content-center">
+    <div class="w-100 text-center">
       <input type="submit" value="Envoyer" (click)="addPurchase(name.value,price.value, reservationId.value,d)">
-      <input type="submit" value="Annuler" style="margin-left: 5%" (click)="displayPurchase()">
     </div>
   </div>
 </div>
+
+
 <div class="m-5">
-  <h4>Total Yaron : <span [ngClass]="{'text-success': totalNumber >= 0, 'text-danger': totalNumber < 0}">{{totalNumber}} ₪</span></h4>
+  <h4>Total Yaron : <span [ngClass]="{'text-success': totalNumber >= 0, 'text-danger': totalNumber < 0}">{{totalNumber}}
+    ₪</span></h4>
 </div>
 <br>
 <div class="w-100 text-center">
@@ -122,19 +128,22 @@
             {{purchase.name}}
           </td>
           <td>
-            {{purchase.amount}} €
+            {{purchase.amount}} ₪
           </td>
           <td>
             {{purchase.datePurchase | date : 'dd/MM/yyyy'}}
           </td>
-          <td >
-            <span *ngIf=purchase.image class="cursor link-primary" (click)="openImage(purchase.image)"><u>image <i class="fa fa-picture-o" aria-hidden="true"></i></u></span>
+          <td>
+            <span *ngIf=purchase.image class="cursor link-primary" (click)="openImage(purchase.image)"><u>image <i
+              class="fa fa-picture-o" aria-hidden="true"></i></u></span>
           </td>
           <td>
-            <span *ngIf=purchase.image class="cursor link-primary" (click)="displayReservation(purchase.idReservation)"><u>Voir la reservation <i class="fa fa-eye" aria-hidden="true"></i></u></span>
+            <span *ngIf=purchase.idReservation class="cursor link-primary" (click)="displayReservation(purchase.idReservation)"><u>Voir la reservation <i
+              class="fa fa-eye" aria-hidden="true"></i></u></span>
           </td>
           <td>
-            <i class="fa fa-trash cursor" aria-hidden="true" style="margin-left: 20%; color: #c20b0b" (click)="deletePurchase(purchase.idPurchase)" ></i>
+            <i class="fa fa-trash cursor" aria-hidden="true" style="margin-left: 20%; color: #c20b0b"
+               (click)="deletePurchase(purchase.idPurchase)"></i>
           </td>
         </tr>
         </tbody>

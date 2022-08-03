@@ -4,6 +4,7 @@ import {ConnexionUserComponent} from "./app/connexion-user/connexion-user.compon
 import {AuthGuard} from "./app/auth.guard";
 import {PurchaseComponent} from "./app/purchase/purchase.component";
 import {ReservationComponent} from "./app/reservation/reservation.component";
+import {PaymentComponent} from "./app/payment/payment.component";
 
 
 
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path: 'login', component: ConnexionUserComponent},
   {path: 'purchase', component: PurchaseComponent, canActivate: [AuthGuard]},
   {path: 'reservation', component: ReservationComponent, canActivate: [AuthGuard]},
+  {path: 'payment', component: PaymentComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({
