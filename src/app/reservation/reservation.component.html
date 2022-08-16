@@ -24,7 +24,7 @@
       <label for="purchaseName">Nom de la reservation</label>
       <input #name type="text" class="form-control" name="name" id="purchaseName" style="width: 100%" placeholder="Nom">
       <br> <br>
-      <label for="purchasePrice">Prix de la reservation / nuit</label>
+      <label for="purchasePrice">Montant total reservation (sans ménage)</label>
       <input #price type="number" class="form-control" name="name" id="purchasePrice" style="width: 100%"
              placeholder="Prix">
       <br> <br>
@@ -76,7 +76,7 @@
         <thead>
         <tr>
           <th scope="col">Nom</th>
-          <th scope="col">Montant</th>
+          <th scope="col">Montant (sans ménage)</th>
           <th scope="col">Date de début</th>
           <th scope="col">Date de fin</th>
           <th scope="col">Nombre de nuits</th>
@@ -88,7 +88,7 @@
             {{reservation.name}}
           </td>
           <td>
-            {{reservation.amount}} ₪ / nuit
+            {{reservation.amount}} ₪
           </td>
           <td>
             {{reservation.dateStarted | date: 'dd/MM/yyyy'}}

@@ -59,6 +59,7 @@ export class PurchaseComponent implements OnInit {
   maxDateNg = {year: new Date().getFullYear() + 1, month: 11, day: 1}
   public test: any;
   reservations: any;
+  actualReservation: any;
   public src64: any;
   public selectedFile: any;
   public displayAddPurchaseBool: boolean = false;
@@ -229,9 +230,11 @@ export class PurchaseComponent implements OnInit {
   }
 
   displayReservation(idReservation: number) {
+    console.log(idReservation);
     this.displayReservationBool = true;
-    this.reservations.filter((reservation: any) => {
+    this.actualReservation = this.reservations.filter((reservation: any) => {
       return reservation.idReservation == idReservation;
     }).pop();
+    console.log(this.actualReservation);
   }
 }

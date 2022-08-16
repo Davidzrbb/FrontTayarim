@@ -28,11 +28,11 @@
     <div class="modal-body">
       <div class="d-flex flex-column">
         <ul class="list-group">
-          <li class="list-group-item">Nom de la reservation : {{reservations[0].name}}</li>
+          <li class="list-group-item">Nom de la reservation : {{actualReservation.name}}</li>
           <li class="list-group-item">Date début de reservation
-            : {{reservations[0].dateStarted | date : 'dd/MM/yyyy'}}</li>
-          <li class="list-group-item">Date fin de reservation : {{reservations[0].dateEnded | date : 'dd/MM/yyyy'}}</li>
-          <li class="list-group-item">Prix par nuit : {{reservations[0].amount | number}} ₪</li>
+            : {{actualReservation.dateStarted | date : 'dd/MM/yyyy'}}</li>
+          <li class="list-group-item">Date fin de reservation : {{actualReservation.dateEnded | date : 'dd/MM/yyyy'}}</li>
+          <li class="list-group-item">Prix par nuit : {{actualReservation.amount | number}} ₪</li>
         </ul>
       </div>
     </div>
