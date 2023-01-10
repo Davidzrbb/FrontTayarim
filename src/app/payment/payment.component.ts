@@ -19,10 +19,11 @@ export class PaymentComponent implements OnInit {
   public displayAddPayment: boolean = false;
   public payments: any;
   model: any;
-  minDateNg = {year: new Date().getFullYear(), month: 5, day: 1};
+  minDateNg = {year: new Date().getFullYear(), month: 0, day: 1};
   maxDateNg = {year: new Date().getFullYear() + 1, month: 11, day: 1}
   reservations: any;
-  public displayReservationBool: boolean =false;
+  actualReservation: any;
+  public displayReservationBool: boolean = false;
 
   constructor(private paymentService: PaymentService, private purchaseService: PurchaseService, private reservationService: ReservationService, private h: HttpClient, private sanitizer: DomSanitizer) {
   }
@@ -69,6 +70,7 @@ export class PaymentComponent implements OnInit {
       }
     });
   }
+
   private async getAllReservations() {
     this.reservationService.getAll().subscribe({
       next: (res) => {
@@ -80,12 +82,13 @@ export class PaymentComponent implements OnInit {
       }
     });
   }
+
   closeModal() {
     this.displayAddPayment = false;
     this.displayReservationBool = false;
   }
 
-  addPayment(nameSend: string, nameReceipt: string, amount: string, d: any,reservationId: string | null) {
+  addPayment(nameSend: string, nameReceipt: string, amount: string, d: any, reservationId: string | null) {
     if (nameSend == "" || nameReceipt == "" || amount == "") {
       this.returnError = true;
       this.errorMessage = "Please fill all fields";
@@ -149,8 +152,10 @@ export class PaymentComponent implements OnInit {
   }
 
   displayReservation(idReservation: number) {
+    console.log(idReservation);
+    console.log(this.reservations);
     this.displayReservationBool = true;
-    this.reservations.filter((reservation: any) => {
+    this.actualReservation = this.reservations.filter((reservation: any) => {
       return reservation.idReservation == idReservation;
     }).pop();
   }

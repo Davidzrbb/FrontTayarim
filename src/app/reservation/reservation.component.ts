@@ -20,9 +20,9 @@ export class ReservationComponent implements OnInit {
   public reservations: any;
   public displayAddReservationBool: boolean = false;
   model: NgbDateStruct | undefined;
-  minDate = new Date(new Date().getFullYear(), 5, 1);
+  minDate = new Date(new Date().getFullYear(), 0, 1);
   maxDate = new Date(new Date().getFullYear() + 1, 11, 1);
-  minDateNg = {year: new Date().getFullYear(), month: 5, day: 1};
+  minDateNg = {year: new Date().getFullYear(), month: 0, day: 1};
   maxDateNg = {year: new Date().getFullYear() + 1, month: 11, day: 1}
   newItem: NgbDateStruct | undefined;
 

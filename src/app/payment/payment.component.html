@@ -17,11 +17,12 @@
     <div class="modal-body">
       <div class="d-flex flex-column">
         <ul class="list-group">
-          <li class="list-group-item">Nom de la reservation : {{reservations[0].name}}</li>
+          <li class="list-group-item">Nom de la reservation : {{actualReservation.name}}</li>
           <li class="list-group-item">Date début de reservation
-            : {{reservations[0].dateStarted | date : 'dd/MM/yyyy'}}</li>
-          <li class="list-group-item">Date fin de reservation : {{reservations[0].dateEnded | date : 'dd/MM/yyyy'}}</li>
-          <li class="list-group-item">Prix par nuit : {{reservations[0].amount | number}} ₪</li>
+            : {{actualReservation.dateStarted | date : 'dd/MM/yyyy'}}</li>
+          <li class="list-group-item">Date fin de reservation
+            : {{actualReservation.dateEnded | date : 'dd/MM/yyyy'}}</li>
+          <li class="list-group-item">Prix par nuit : {{actualReservation.amount | number}} ₪</li>
         </ul>
       </div>
     </div>
@@ -40,10 +41,12 @@
     </div>
     <div class="modal-body">
       <label for="purchaseNameSend">Nom du donneur</label>
-      <input #nameSend type="text" class="form-control" name="name" id="purchaseNameSend" style="width: 100%" placeholder="Nom">
+      <input #nameSend type="text" class="form-control" name="name" id="purchaseNameSend" style="width: 100%"
+             placeholder="Nom">
       <br> <br>
       <label for="purchaseNameReceipt">Nom du beneficiare</label>
-      <input #nameReceipt type="text" class="form-control" name="name" id="purchaseNameReceipt" style="width: 100%" placeholder="Nom">
+      <input #nameReceipt type="text" class="form-control" name="name" id="purchaseNameReceipt" style="width: 100%"
+             placeholder="Nom">
       <br> <br>
       <label for="purchasePrice">Montant</label>
       <input #price type="number" class="form-control" name="name" id="purchasePrice" style="width: 100%"
@@ -71,12 +74,11 @@
     </div>
     <br>
     <div class="w-100 text-center">
-      <input type="submit" value="Envoyer" (click)="addPayment(nameSend.value,nameReceipt.value,price.value,d,reservationId.value)">
+      <input type="submit" value="Envoyer"
+             (click)="addPayment(nameSend.value,nameReceipt.value,price.value,d,reservationId.value)">
     </div>
   </div>
 </div>
-
-
 
 
 <div class="m-5">
@@ -101,7 +103,8 @@
               <span style="color: #696969">{{payment.amount | number }} ₪</span>
               <i class="fa fa-long-arrow-right fa-size" aria-hidden="true"></i>
               <span style="color: #696969">{{payment.datePayment |date:'dd/MM/yyyy'}}</span>
-              <span *ngIf=payment.idReservation class="cursor link-primary" (click)="displayReservation(payment.idReservation)"><u>Voir la reservation <i
+              <span *ngIf=payment.idReservation class="cursor link-primary"
+                    (click)="displayReservation(payment.idReservation)"><u>Voir la reservation <i
                 class="fa fa-eye" aria-hidden="true"></i></u></span>
             </div>
             <div>
