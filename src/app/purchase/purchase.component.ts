@@ -1,7 +1,7 @@
 import {ReservationService} from "../services/reservation.service";
 import {Component, OnInit} from '@angular/core';
 import {PaymentService} from "../services/payment.service";
-import {UntypedFormControl} from '@angular/forms';
+import {FormControl} from '@angular/forms';
 import {MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import * as _moment from 'moment';
@@ -45,7 +45,7 @@ export class PurchaseComponent implements OnInit {
 
   public totalNumber: number = 0;
   public valueDatePicker: any;
-  date = new UntypedFormControl(moment());
+  date = new FormControl(moment());
   purchase: any;
   purchaseTmp: any;
   public returnError: boolean = false;
